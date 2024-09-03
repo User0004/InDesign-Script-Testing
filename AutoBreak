@@ -1,3 +1,5 @@
+// This is not the .js file for Indesign. It can be downloaded and the file extension changed if needed - pls use the .js file provided for testing. This is just a text file for reading
+
 // NAME:Autobreak
 // Status: Working  - conditional - do not use on first Naviga box as you cannot duplicate database items - for other instances works
 // FUNCTION - To break text frames spanning =>2 columns into the their respective single columns while maintaing threading
