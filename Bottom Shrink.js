@@ -1,4 +1,17 @@
-// Bottom Expand shrink 
+// NAME:Top Expand , Top Shrink, Bottom Expand, Bottom Shrink 
+// Status: Working 
+// FUNCTION - To perform an increase or decrease of the height of one or more selected items - which vary in their heights - by the unit of one baseline for each time a script is run 
+// InDesign cannot by default allow a user to change the height of all boxes in a selection at the same time while maintaining a fixed position of selections opposite to that being expanded or shrinked 
+// The script means a designer can expand or shrink an entire story in one go 
+// OUTLINE - Script reads baseline grid size and either adds or subtracks baseline height to overall height of selections 
+
+// Prefered keyboard shortcut is Top Expand F9, Top Shrink Shift+9, Bottom Expand F10 , Bottom Shrink Shift F10
+
+
+
+
+
+// Bottom shrink 
 
 app.doScript(function() {
     // Get the active document
