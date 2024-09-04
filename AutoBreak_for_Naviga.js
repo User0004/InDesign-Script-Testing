@@ -8,8 +8,6 @@
 // Prefered keyboard shortcut is F5
 
 
-
-
 // Define the start function to initiate the column organization
 function start() {
     var selectedFrame = app.activeDocument.selection[0];
@@ -17,6 +15,18 @@ function start() {
     // Check if a selection was made and if it is a TextFrame
     if (selectedFrame == undefined || selectedFrame.constructor.name != 'TextFrame') {
         alert("Please select a text frame.");
+        return;
+    }
+
+    // Check if the frame is the first in the thread
+    if (selectedFrame.previousTextFrame == null) {
+        alert("Cannot process the first text frame.");
+        return;
+    }
+
+    // Check if the selected frame has at least 2 columns
+    if (selectedFrame.textFramePreferences.textColumnCount < 2) {
+        alert("Please select a text frame that has two or more columns.");
         return;
     }
 
@@ -29,18 +39,6 @@ app.doScript(start, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIP
 
 // Define the function to create columns from the selected frame
 function createColumnsFromSelection(frame) {
-    // Ensure the frame has at least 2 columns
-    if (frame.textFramePreferences.textColumnCount < 2) {
-        alert("Please select a text frame that has two or more columns.");
-        return;
-    }
-
-    // Ensure the frame is not the first in the thread
-    if (frame.previousTextFrame == null) {
-        alert("Cannot process multicolumn text frame if it is the first text frame.");
-        return;
-    }
-
     // Set the measurement units to points for consistency
     app.scriptPreferences.measurementUnit = MeasurementUnits.POINTS;
 
