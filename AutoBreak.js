@@ -1,4 +1,7 @@
 // NAME:Autobreak
+
+// Version ------------- NOTE ------------- This script will work on the first text frames part of thread -------- the updated version prevents this so consider that script instead of this for Naviga
+
 // Status: Working  - conditional - do not use on first Naviga box as you cannot duplicate database items - for other instances works
 // FUNCTION - To break text frames spanning =>2 columns into the their respective single columns while maintaing threading
 // OUTLINE - reads the size of columns, duplicates columns and threads 
