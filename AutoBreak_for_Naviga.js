@@ -1,4 +1,4 @@
-// NAME:Autobreak
+// NAME:AutoBreak
 
 // Version ------------- NOTE ------------- This script will not work on text frames of which there is not previous text frame threaded, i.e. preventing errors regarding duplication of Naviga database boxes 
 
