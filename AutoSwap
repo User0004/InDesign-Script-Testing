@@ -7,8 +7,8 @@
 // One can select two single objects or  - group an array of objects together with a selection to move wider selections - one can also use this script to swap stories on the page with new furniture and not have to redraw an entire page
 // Prefered keyboard shortcut is F11
 
-
-
+//POSSIBLE UPDATES: Improve user support for matching sizes tolerance - i.e. increase disances so that crops don't change for geometry sizes that are for example 10% out etc 
+ 
 app.doScript(function () {
     if (app.selection.length !== 2) {
         alert("Please select exactly two objects.");
