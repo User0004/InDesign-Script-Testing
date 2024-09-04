@@ -8,6 +8,8 @@
 // This is a sister script to AutoSubheader ---- this script works where there is not bodycopy paragraphs, think of lists such as Product + Price, Gov Spending + £000  etc 
 // Prefered keyboard shortcut is Shift + F2
 
+//POSSIBLE UPDATES: Would be good to think about adding a feature where the script, if and only if, the cursor is inside the text frame, that the script execute from that point onwards
+//POSSIBLE UPDATES: Hard code for hyphenation
 
 function findAndApplyTextSettings() {
     // Ensure that there's an active document open
