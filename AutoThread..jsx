@@ -5,8 +5,6 @@
 // OUTLINE - 
 // Prefered keyboard shortcut is F7
 
-
-
 var gScriptName = "Thread Text Frames (Left to Right)";
 
 try {
@@ -25,19 +23,32 @@ function main() {
         return;
     }
 
+    // Check for threaded frames
+    var threadedCount = 0;
+    for (var i = 0; i < selectedFrames.length; i++) {
+        if (selectedFrames[i] instanceof TextFrame && selectedFrames[i].previousTextFrame != null) {
+            threadedCount++;
+        }
+    }
+
+    // Show error if more than one previously threaded frame is selected
+    if (threadedCount > 1) {
+        alert("Please ensure no more than one previously threaded text frame is selected.", gScriptName);
+        return;
+    }
+
+    // Sort the selected frames by their position
     selectedFrames.sort(compareFramesByPosition);
 
+    // Start threading from the leftmost frame
     var leftmostFrame = selectedFrames[0];
 
     threadFrames(selectedFrames, leftmostFrame);
 }
 
 function compareFramesByPosition(frameA, frameB) {
+    // Sort by x-position (geometricBounds[1] is the x-coordinate)
     return frameA.geometricBounds[1] - frameB.geometricBounds[1];
-}
-
-function isValidTextFrame(frame) {
-    return frame instanceof TextFrame && !frame.previousTextFrame;
 }
 
 function threadFrames(frames, startFrame) {
@@ -46,6 +57,7 @@ function threadFrames(frames, startFrame) {
     for (var i = 1; i < frames.length; i++) {
         var currentFrame = frames[i];
 
+        // Thread the current frame to the previous one
         currentFrame.previousTextFrame = previousFrame;
 
         previousFrame = currentFrame;
