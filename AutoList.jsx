@@ -9,7 +9,7 @@
 
 
 
-
+//AutoList
 function findAndApplyTextSettings() {
     // Ensure that there's an active document open
     if (app.documents.length > 0) {
