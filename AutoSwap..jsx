@@ -56,7 +56,7 @@ app.doScript(function () {
 
             // Function to compare width and height
             function areDimensionsEqual(width1, height1, width2, height2) {
-                return Math.abs(width1 - width2) < 0.01 && Math.abs(height1 - height2) < 0.01; // Tolerance for floating-point precision
+                return Math.abs(width1 - width2) < 6 && Math.abs(height1 - height2) < 6; // Tolerance for floating-point precision
             }
 
             // Check if either object is a multi-column text frame
