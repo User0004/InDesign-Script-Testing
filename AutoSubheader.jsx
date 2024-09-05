@@ -7,9 +7,6 @@
 // Prefered keyboard shortcut is F2
 
 
-
-
-
 // Main function to find and apply text settings to consecutive paragraphs
 function findAndApplyTextSettings() {
     if (app.documents.length > 0) {
@@ -181,7 +178,8 @@ function getTextSettings(paragraph) {
         ruleBelowType: paragraph.ruleBelowType,
         ruleBelowWidth: paragraph.ruleBelowWidth,
         spaceBefore: paragraph.spaceBefore,
-        spaceAfter: paragraph.spaceAfter
+        spaceAfter: paragraph.spaceAfter,
+        hyphenation: paragraph.hyphenation
     };
 
     var paragraphStyle = paragraph.appliedParagraphStyle;
@@ -251,6 +249,7 @@ function applyTextSettings(paragraph, settings) {
         paragraph.ruleBelowWidth = settings.ruleBelowWidth;
         paragraph.spaceBefore = settings.spaceBefore;
         paragraph.spaceAfter = settings.spaceAfter;
+        paragraph.hyphenation = settings.hyphenation;
     }
 }
 
