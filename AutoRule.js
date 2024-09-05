@@ -10,11 +10,6 @@
 
 
 
-
-
-
-
-
 // AutoRule script 
 // Set measurement units to points
 app.scriptPreferences.measurementUnit = MeasurementUnits.POINTS;
@@ -33,12 +28,24 @@ var userDefinedAmountBottom = Number(xml.values.bottom);
 var userDefinedStrokeWeight = Number(xml.values.stroke);
 var userDefinedColorIndex = Number(xml.values.color); 
 
+// Function to check if all selected frames are on a page and not on the pasteboard
+function areFramesOnPage(frames) {
+    for (var i = 0; i < frames.length; i++) {
+        if (!frames[i].parentPage) {
+            return false; // At least one frame is on the pasteboard
+        }
+    }
+    return true; // All frames are on the page
+}
+
 // Main code below
 if (app.documents.length > 0) {
     var doc = app.activeDocument;
     var selectedFrames = doc.selection;
 
-    if (selectedFrames.length >= 2) {
+    if (!areFramesOnPage(selectedFrames)) {
+        alert("Please ensure that all selected frames are on the page, not on the pasteboard.");
+    } else if (selectedFrames.length >= 2) {
         selectedFrames.sort(function(a, b) {
             return a.geometricBounds[1] - b.geometricBounds[1];
         });
