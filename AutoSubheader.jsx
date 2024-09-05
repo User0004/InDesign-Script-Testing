@@ -7,6 +7,11 @@
 // Prefered keyboard shortcut is F2
 
 
+
+
+
+
+//AutoSubheader
 // Main function to find and apply text settings to consecutive paragraphs
 function findAndApplyTextSettings() {
     if (app.documents.length > 0) {
