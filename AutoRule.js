@@ -3,7 +3,7 @@
 // FUNCTION - Adds rules inbetween selections of differnt types i.e. graphic frames text boxes etc 
 // OUTLINE - Pairs with another script AutoRules Controller (below) which creates a json file containing the attribues of the rules wanted by a designer 
 // If a designer does not need to run the AutoRules Controller one may simply run the AutoRules which as been set up to work from default settings appropriate for DT pages 
-// The script places a 0.3pt black rule with 
+// The script places a 0.3pt black rule with a height notched from the top so it lines up with letters 
 // The script can work out how high or low to place rules based on neighbouring heights of selections PLUS selections can be made across spreads without placing rules in the gutter 
 // Prefered keyboard shortcut is F6
 
