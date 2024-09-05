@@ -128,7 +128,8 @@ function getTextSettings(paragraph) {
         ruleBelowType: paragraph.ruleBelowType,
         ruleBelowWidth: paragraph.ruleBelowWidth,
         spaceBefore: paragraph.spaceBefore, // Add spaceBefore attribute
-        spaceAfter: paragraph.spaceAfter // Add spaceAfter attribute
+        spaceAfter: paragraph.spaceAfter, // Add spaceAfter attribute
+        hyphenation: paragraph.hyphenation // Add hyphenation attribute
         // Add more text attributes as needed
     };
 }
@@ -170,6 +171,7 @@ function applyTextSettings(paragraph, settings) {
     paragraph.ruleBelowWidth = settings.ruleBelowWidth;
     paragraph.spaceBefore = settings.spaceBefore; // Apply spaceBefore
     paragraph.spaceAfter = settings.spaceAfter; // Apply spaceAfter
+    paragraph.hyphenation = settings.hyphenation; // Apply hyphenation
 
     // Apply word-level settings to each word in the paragraph
     var paraWords = paragraph.words.everyItem().getElements();
