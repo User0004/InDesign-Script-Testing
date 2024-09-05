@@ -6,6 +6,7 @@
 // This is a sister script to AutoSubheader ---- this script works where there is not bodycopy paragraphs, think of lists such as Product + Price, Gov Spending + £000  etc 
 // Prefered keyboard shortcut is Shift + F2
 
+
 function findAndApplyTextSettings() {
     // Ensure that there's an active document open
     if (app.documents.length > 0) {
