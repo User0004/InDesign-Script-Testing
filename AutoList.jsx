@@ -7,6 +7,9 @@
 // Prefered keyboard shortcut is Shift + F2
 
 
+
+
+
 function findAndApplyTextSettings() {
     // Ensure that there's an active document open
     if (app.documents.length > 0) {
@@ -39,10 +42,23 @@ function findAndApplyTextSettings() {
                         var words = para.words.length;
                         var paragraphText = para.contents;
 
-                        // Check criteria: 1 to 10 words and no full stop
-                        if (words > 0 && words <= 10 && paragraphText.indexOf('.') === -1) {
-                            consecutiveParagraphs.push(para);
-                            allConsecutiveSettings.push(getTextSettings(para));
+                        // Check updated criteria for paragraphs
+                        if (words > 0 && words <= 10) {
+                            var lastWord = para.words.lastItem();
+                            var lastWordContents = lastWord.contents;
+
+                            // Check if the last word ends with a period
+                            if (lastWordContents.charAt(lastWordContents.length - 1) === ".") {
+                                // Check if the period is part of a number or abbreviation
+                                var periodPattern = /\d+\.\d+|[a-zA-Z]\.\s*$/;
+                                if (!periodPattern.test(lastWordContents)) {
+                                    consecutiveParagraphs.push(para);
+                                    allConsecutiveSettings.push(getTextSettings(para));
+                                }
+                            } else {
+                                consecutiveParagraphs.push(para);
+                                allConsecutiveSettings.push(getTextSettings(para));
+                            }
                         } else {
                             break; // Stop checking if the paragraph doesn't meet criteria
                         }
@@ -65,10 +81,23 @@ function findAndApplyTextSettings() {
                             var paragraphText = para.contents;
 
                             // Apply text settings if it's a similar paragraph
-                            if (words > 0 && words <= 10 && paragraphText.indexOf('.') === -1) {
-                                if (currentConsecutiveIndex < targetTextSettingsList.length) {
-                                    applyTextSettings(para, targetTextSettingsList[currentConsecutiveIndex]);
-                                    currentConsecutiveIndex++;
+                            if (words > 0 && words <= 10) {
+                                var lastWord = para.words.lastItem();
+                                var lastWordContents = lastWord.contents;
+
+                                if (lastWordContents.charAt(lastWordContents.length - 1) === ".") {
+                                    var periodPattern = /\d+\.\d+|[a-zA-Z]\.\s*$/;
+                                    if (!periodPattern.test(lastWordContents)) {
+                                        if (currentConsecutiveIndex < targetTextSettingsList.length) {
+                                            applyTextSettings(para, targetTextSettingsList[currentConsecutiveIndex]);
+                                            currentConsecutiveIndex++;
+                                        }
+                                    }
+                                } else {
+                                    if (currentConsecutiveIndex < targetTextSettingsList.length) {
+                                        applyTextSettings(para, targetTextSettingsList[currentConsecutiveIndex]);
+                                        currentConsecutiveIndex++;
+                                    }
                                 }
                             } else {
                                 currentConsecutiveIndex = 0; // Reset if paragraph does not meet criteria
