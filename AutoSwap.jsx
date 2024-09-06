@@ -12,7 +12,7 @@
 // Note user will be alerted to an error if they try to swap something with a GraphicLine -- aka just a straight line 
 
 
-AutoSwap
+//AutoSwap
 app.doScript(function () {
     if (app.selection.length !== 2) {
         alert("Please select exactly two objects.");
