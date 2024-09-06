@@ -8,13 +8,23 @@
 // Prefered keyboard shortcut is F11
 
 
+// Updated code to handle swaps of differnt SplineItem subclasses, namely Oval | Rectangle | Polygon
+// Note user will be alerted to an error if they try to swap something with a GraphicLine -- aka just a straight line 
 
+
+AutoSwap
 app.doScript(function () {
     if (app.selection.length !== 2) {
         alert("Please select exactly two objects.");
     } else {
         var firstObject = app.selection[0];
         var secondObject = app.selection[1];
+
+        // Check if either object is a GraphicLine
+        if (firstObject.constructor.name === "GraphicLine" || secondObject.constructor.name === "GraphicLine") {
+            alert("Cannot swap selection with a rule.");
+            return; // Exit the script if a GraphicLine is detected
+        }
 
         // Ensure both objects are valid
         if (!firstObject.isValid || !secondObject.isValid) {
@@ -29,7 +39,7 @@ app.doScript(function () {
                         isMultiColumn: object.textFramePreferences.textColumnCount > 1
                     };
                 }
-                return null; // Return null if the object does not contain a text frame
+                return null;
             }
 
             // Function to apply text frame settings
@@ -103,6 +113,19 @@ app.doScript(function () {
                 }
             }
 
+            // Function to fit content in images with proportional adjustment for all shapes
+            function fitContentInImagesProportionally(object, fitOption) {
+                if ((object.constructor.name === "Rectangle" || 
+                     object.constructor.name === "Oval" || 
+                     object.constructor.name === "Polygon") && object.images.length > 0) {
+                    object.fit(fitOption);  // Use proportional fitting
+                } else if (object.constructor.name === "Group") {
+                    for (var i = 0; i < object.allPageItems.length; i++) {
+                        fitContentInImagesProportionally(object.allPageItems[i], fitOption);
+                    }
+                }
+            }
+
             // Check if the dimensions (width and height) are equal
             if (areDimensionsEqual(firstWidth, firstHeight, secondWidth, secondHeight)) {
                 // Calculate the offset between the first and second object
@@ -118,25 +141,12 @@ app.doScript(function () {
                 adjustGroupImagesPosition(secondObject, -offsetX, -offsetY);
 
             } else {
-                // Function to fit content in images
-                function fitContentInImages(object, fitOption) {
-                    if (object.constructor.name === "Rectangle" && object.images.length > 0) {
-                        object.fit(fitOption);
-                    } else if (object.constructor.name === "Group") {
-                        for (var i = 0; i < object.allPageItems.length; i++) {
-                            if (object.allPageItems[i].constructor.name === "Rectangle" && object.allPageItems[i].images.length > 0) {
-                                object.allPageItems[i].fit(fitOption);
-                            }
-                        }
-                    }
-                }
-
-                // Use FILL_PROPORTIONALLY option for fitting images
+                // Use FILL_PROPORTIONALLY option for fitting images without stretching
                 var fitOptions = FitOptions.FILL_PROPORTIONALLY;
 
-                // Fit content in images in both objects using FILL_PROPORTIONALLY
-                fitContentInImages(firstObject, fitOptions);
-                fitContentInImages(secondObject, fitOptions);
+                // Fit content in images in both objects using proportional fitting for all shapes
+                fitContentInImagesProportionally(firstObject, fitOptions);
+                fitContentInImagesProportionally(secondObject, fitOptions);
 
                 // Adjust image positions within groups if necessary
                 adjustGroupImagesPosition(firstObject, 0, 0);
