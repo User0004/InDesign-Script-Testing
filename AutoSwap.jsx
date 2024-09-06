@@ -7,9 +7,9 @@
 // One can select two single objects or  - group an array of objects together with a selection to move wider selections - one can also use this script to swap stories on the page with new furniture and not have to redraw an entire page
 // Prefered keyboard shortcut is F11
 
-
 // Updated code to handle swaps of differnt SplineItem subclasses, namely Oval | Rectangle | Polygon
 // Note user will be alerted to an error if they try to swap something with a GraphicLine -- aka just a straight line 
+
 
 
 //AutoSwap
@@ -22,7 +22,7 @@ app.doScript(function () {
 
         // Check if either object is a GraphicLine
         if (firstObject.constructor.name === "GraphicLine" || secondObject.constructor.name === "GraphicLine") {
-            alert("Cannot swap selection with a rule.");
+            alert("Cannot swap selection with a GraphicLine.");
             return; // Exit the script if a GraphicLine is detected
         }
 
