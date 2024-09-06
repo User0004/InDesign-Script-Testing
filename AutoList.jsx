@@ -1,4 +1,4 @@
-// NAME:AutoSubheader
+// NAME:AutoList
 // Status: Working  - This script is constantly being refined - as it currently works on hard coding in attributes which for DT works well but more efficent means could be developed
 // FUNCTION - To search for an array of words which are <10 in length not contaning a period (with exceptions) and apply the first instance subheader throughout following text
 // The script allows the designer to have many stacked subheaders in which the respective subheader can be applyied throughout the copy 
