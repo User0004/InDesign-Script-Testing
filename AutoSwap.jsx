@@ -22,7 +22,7 @@ app.doScript(function () {
 
         // Check if either object is a GraphicLine
         if (firstObject.constructor.name === "GraphicLine" || secondObject.constructor.name === "GraphicLine") {
-            alert("Cannot swap selection with a GraphicLine.");
+            alert("Cannot swap selection with a rule.");
             return; // Exit the script if a GraphicLine is detected
         }
 
