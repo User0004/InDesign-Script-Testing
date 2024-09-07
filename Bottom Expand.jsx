@@ -8,10 +8,6 @@
 // Prefered keyboard shortcut is Top Expand F9, Top Shrink Shift+9, Bottom Expand F10 , Bottom Shrink Shift F10
 
 
-
-
-
-
 //Bottom Expand
 
 app.doScript(function() {
