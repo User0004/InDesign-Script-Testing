@@ -61,15 +61,8 @@ function main() {
     // Sort the selected frames by their position
     selectedFrames.sort(compareFramesByPosition);
 
-    // Add a carriage return to the end of each frame's text (except the first one)
-    for (var i = 1; i < selectedFrames.length; i++) {
-        addCarriageReturn(selectedFrames[i]);
-    }
-
-    // Start threading from the leftmost frame
-    var leftmostFrame = selectedFrames[0];
-
-    threadFrames(selectedFrames, leftmostFrame);
+    // Thread the frames, starting from the leftmost one
+    threadFrames(selectedFrames);
 }
 
 function compareFramesByPosition(frameA, frameB) {
@@ -77,8 +70,8 @@ function compareFramesByPosition(frameA, frameB) {
     return frameA.geometricBounds[1] - frameB.geometricBounds[1];
 }
 
-function threadFrames(frames, startFrame) {
-    var previousFrame = startFrame;
+function threadFrames(frames) {
+    var previousFrame = frames[0]; // Extract the starting point here
 
     for (var i = 1; i < frames.length; i++) {
         var currentFrame = frames[i];
@@ -88,10 +81,4 @@ function threadFrames(frames, startFrame) {
 
         previousFrame = currentFrame;
     }
-}
-
-function addCarriageReturn(frame) {
-    var text = frame.parentStory;
-    var lastInsertionPoint = text.insertionPoints[-1];
-    lastInsertionPoint.contents = "\r";
 }
