@@ -1,3 +1,4 @@
+//Top Shrink
 // NAME:Top Expand , Top Shrink, Bottom Expand, Bottom Shrink 
 // Status: Working 
 // FUNCTION - To perform an increase or decrease of the height of one or more selected items - which vary in their heights - by the unit of one baseline for each time a script is run 
@@ -12,8 +13,6 @@
 
 
 //Top Shrink
-
-// Define the script as a function to be executed
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
