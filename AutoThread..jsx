@@ -54,7 +54,7 @@ function main() {
 
     // Show error if more than one previously threaded frame is selected
     if (threadedCount > 1) {
-        alert("Please ensure no more than one previously threaded text frame is selected.", gScriptName);
+        alert("Please ensure no more than one previously threaded text frame is part of your selection, then try again.", gScriptName);
         return;
     }
 
