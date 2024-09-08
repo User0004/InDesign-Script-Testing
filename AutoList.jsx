@@ -6,9 +6,6 @@
 // This is a sister script to AutoSubheader ---- this script works where there is not bodycopy paragraphs, think of lists such as Product + Price, Gov Spending + £000  etc 
 // Prefered keyboard shortcut is Shift + F2
 
-
-
-
 //AutoList
 function findAndApplyTextSettings() {
     // Ensure that there's an active document open
@@ -40,7 +37,6 @@ function findAndApplyTextSettings() {
                     for (var k = i; k < paragraphs.length; k++) {
                         var para = paragraphs[k];
                         var words = para.words.length;
-                        var paragraphText = para.contents;
 
                         // Check updated criteria for paragraphs
                         if (words > 0 && words <= 10) {
@@ -78,7 +74,6 @@ function findAndApplyTextSettings() {
                         for (var i = 0; i < paragraphs.length; i++) {
                             var para = paragraphs[i];
                             var words = para.words.length;
-                            var paragraphText = para.contents;
 
                             // Apply text settings if it's a similar paragraph
                             if (words > 0 && words <= 10) {
@@ -118,104 +113,141 @@ function findAndApplyTextSettings() {
 
 // Function to get text settings from a paragraph
 function getTextSettings(paragraph) {
-    return {
-        appliedFont: paragraph.appliedFont,
-        pointSize: paragraph.pointSize,
-        fillColor: paragraph.fillColor,
-        fillTint: paragraph.fillTint,
-        justification: paragraph.justification,
-        leading: paragraph.leading,
-        firstLineIndent: paragraph.firstLineIndent,
-        baselineShift: paragraph.baselineShift,
-        tracking: paragraph.tracking,
-        capitalization: getCapitalization(paragraph.capitalization),
-        alignToBaseline: paragraph.alignToBaseline,
-        ruleAbove: paragraph.ruleAbove === true,
-        ruleBelow: paragraph.ruleBelow === true,
-        ruleAboveColor: paragraph.ruleAboveColor,
-        ruleAboveGapColor: paragraph.ruleAboveGapColor,
-        ruleAboveGapOverprint: paragraph.ruleAboveGapOverprint === true,
-        ruleAboveGapTint: paragraph.ruleAboveGapTint,
-        ruleAboveLeftIndent: paragraph.ruleAboveLeftIndent,
-        ruleAboveLineWeight: paragraph.ruleAboveLineWeight,
-        ruleAboveOffset: paragraph.ruleAboveOffset,
-        ruleAboveOverprint: paragraph.ruleAboveOverprint === true,
-        ruleAboveRightIndent: paragraph.ruleAboveRightIndent,
-        ruleAboveTint: paragraph.ruleAboveTint,
-        ruleAboveType: paragraph.ruleAboveType,
-        ruleAboveWidth: paragraph.ruleAboveWidth,
-        ruleBelowColor: paragraph.ruleBelowColor,
-        ruleBelowGapColor: paragraph.ruleBelowGapColor,
-        ruleBelowGapOverprint: paragraph.ruleBelowGapOverprint === true,
-        ruleBelowGapTint: paragraph.ruleBelowGapTint,
-        ruleBelowLeftIndent: paragraph.ruleBelowLeftIndent,
-        ruleBelowLineWeight: paragraph.ruleBelowLineWeight,
-        ruleBelowOffset: paragraph.ruleBelowOffset,
-        ruleBelowOverprint: paragraph.ruleBelowOverprint === true,
-        ruleBelowRightIndent: paragraph.ruleBelowRightIndent,
-        ruleBelowTint: paragraph.ruleBelowTint,
-        ruleBelowType: paragraph.ruleBelowType,
-        ruleBelowWidth: paragraph.ruleBelowWidth,
-        spaceBefore: paragraph.spaceBefore, // Add spaceBefore attribute
-        spaceAfter: paragraph.spaceAfter, // Add spaceAfter attribute
-        hyphenation: paragraph.hyphenation // Add hyphenation attribute
-        // Add more text attributes as needed
-    };
+    var settings = {};
+
+    var paragraphStyle = paragraph.appliedParagraphStyle;
+    if (paragraphStyle.isValid && isStyleUnmodified(paragraph, paragraphStyle)) {
+        settings.paragraphStyle = paragraphStyle;
+    } else {
+        // Fallback: Gather all the settings manually
+        settings.appliedFont = paragraph.appliedFont;
+        settings.pointSize = paragraph.pointSize;
+        settings.fillColor = paragraph.fillColor;
+        settings.fillTint = paragraph.fillTint;
+        settings.justification = paragraph.justification;
+        settings.leading = paragraph.leading;
+        settings.firstLineIndent = paragraph.firstLineIndent;
+        settings.baselineShift = paragraph.baselineShift;
+        settings.tracking = paragraph.tracking;
+        settings.capitalization = getCapitalization(paragraph.capitalization);
+        settings.alignToBaseline = paragraph.alignToBaseline;
+        settings.ruleAbove = paragraph.ruleAbove === true;
+        settings.ruleBelow = paragraph.ruleBelow === true;
+
+        // Rule Above settings
+        settings.ruleAboveColor = paragraph.ruleAboveColor;
+        settings.ruleAboveGapColor = paragraph.ruleAboveGapColor;
+        settings.ruleAboveGapOverprint = paragraph.ruleAboveGapOverprint === true;
+        settings.ruleAboveGapTint = paragraph.ruleAboveGapTint;
+        settings.ruleAboveLeftIndent = paragraph.ruleAboveLeftIndent;
+        settings.ruleAboveLineWeight = paragraph.ruleAboveLineWeight;
+        settings.ruleAboveOffset = paragraph.ruleAboveOffset;
+        settings.ruleAboveOverprint = paragraph.ruleAboveOverprint === true;
+        settings.ruleAboveRightIndent = paragraph.ruleAboveRightIndent;
+        settings.ruleAboveTint = paragraph.ruleAboveTint;
+        settings.ruleAboveType = paragraph.ruleAboveType;
+        settings.ruleAboveWidth = paragraph.ruleAboveWidth;
+
+        // Rule Below settings
+        settings.ruleBelowColor = paragraph.ruleBelowColor;
+        settings.ruleBelowGapColor = paragraph.ruleBelowGapColor;
+        settings.ruleBelowGapOverprint = paragraph.ruleBelowGapOverprint === true;
+        settings.ruleBelowGapTint = paragraph.ruleBelowGapTint;
+        settings.ruleBelowLeftIndent = paragraph.ruleBelowLeftIndent;
+        settings.ruleBelowLineWeight = paragraph.ruleBelowLineWeight;
+        settings.ruleBelowOffset = paragraph.ruleBelowOffset;
+        settings.ruleBelowOverprint = paragraph.ruleBelowOverprint === true;
+        settings.ruleBelowRightIndent = paragraph.ruleBelowRightIndent;
+        settings.ruleBelowTint = paragraph.ruleBelowTint;
+        settings.ruleBelowType = paragraph.ruleBelowType;
+        settings.ruleBelowWidth = paragraph.ruleBelowWidth;
+
+        // Additional paragraph settings
+        settings.spaceBefore = paragraph.spaceBefore;
+        settings.spaceAfter = paragraph.spaceAfter;
+        settings.hyphenation = paragraph.hyphenation;
+    }
+
+    return settings;
 }
 
 // Function to apply text settings to a paragraph
 function applyTextSettings(paragraph, settings) {
-    paragraph.appliedFont = settings.appliedFont;
-    paragraph.pointSize = settings.pointSize;
-    paragraph.fillColor = settings.fillColor;
-    paragraph.fillTint = settings.fillTint;
-    paragraph.leading = settings.leading;
-    paragraph.firstLineIndent = settings.firstLineIndent;
-    paragraph.justification = settings.justification;
-    paragraph.ruleAbove = settings.ruleAbove;
-    paragraph.ruleAboveColor = settings.ruleAboveColor;
-    paragraph.ruleAboveGapColor = settings.ruleAboveGapColor;
-    paragraph.ruleAboveGapOverprint = settings.ruleAboveGapOverprint;
-    paragraph.ruleAboveGapTint = settings.ruleAboveGapTint;
-    paragraph.ruleAboveLeftIndent = settings.ruleAboveLeftIndent;
-    paragraph.ruleAboveLineWeight = settings.ruleAboveLineWeight;
-    paragraph.ruleAboveOffset = settings.ruleAboveOffset;
-    paragraph.ruleAboveOverprint = settings.ruleAboveOverprint;
-    paragraph.ruleAboveRightIndent = settings.ruleAboveRightIndent;
-    paragraph.ruleAboveTint = settings.ruleAboveTint;
-    paragraph.ruleAboveType = settings.ruleAboveType;
-    paragraph.ruleAboveWidth = settings.ruleAboveWidth;
-    paragraph.ruleBelow = settings.ruleBelow;
-    paragraph.ruleBelowColor = settings.ruleBelowColor;
-    paragraph.ruleBelowGapColor = settings.ruleBelowGapColor;
-    paragraph.ruleBelowGapOverprint = settings.ruleBelowGapOverprint;
-    paragraph.ruleBelowGapTint = settings.ruleBelowGapTint;
-    paragraph.ruleBelowLeftIndent = settings.ruleBelowLeftIndent;
-    paragraph.ruleBelowLineWeight = settings.ruleBelowLineWeight;
-    paragraph.ruleBelowOffset = settings.ruleBelowOffset;
-    paragraph.ruleBelowOverprint = settings.ruleBelowOverprint;
-    paragraph.ruleBelowRightIndent = settings.ruleBelowRightIndent;
-    paragraph.ruleBelowTint = settings.ruleBelowTint;
-    paragraph.ruleBelowType = settings.ruleBelowType;
-    paragraph.ruleBelowWidth = settings.ruleBelowWidth;
-    paragraph.spaceBefore = settings.spaceBefore; // Apply spaceBefore
-    paragraph.spaceAfter = settings.spaceAfter; // Apply spaceAfter
-    paragraph.hyphenation = settings.hyphenation; // Apply hyphenation
+    if (settings.paragraphStyle) {
+        // Apply paragraph style if it exists and is unmodified
+        paragraph.applyParagraphStyle(settings.paragraphStyle, true);
+    } else {
+        // Apply individual settings if paragraph style is not available
+        paragraph.appliedFont = settings.appliedFont;
+        paragraph.pointSize = settings.pointSize;
+        paragraph.fillColor = settings.fillColor;
+        paragraph.fillTint = settings.fillTint;
+        paragraph.leading = settings.leading;
+        paragraph.firstLineIndent = settings.firstLineIndent;
+        paragraph.justification = settings.justification;
+        paragraph.baselineShift = settings.baselineShift;
+        paragraph.tracking = settings.tracking;
+        paragraph.capitalization = settings.capitalization;
+        paragraph.alignToBaseline = settings.alignToBaseline;
+        paragraph.ruleAbove = settings.ruleAbove;
+        paragraph.ruleBelow = settings.ruleBelow;
 
-    // Apply word-level settings to each word in the paragraph
-    var paraWords = paragraph.words.everyItem().getElements();
-    for (var k = 0; k < paraWords.length; k++) {
-        paraWords[k].appliedFont = settings.appliedFont;
-        paraWords[k].pointSize = settings.pointSize;
-        paraWords[k].fillColor = settings.fillColor;
-        paraWords[k].fillTint = settings.fillTint;
-        paraWords[k].leading = settings.leading;
-        paraWords[k].baselineShift = settings.baselineShift;
-        paraWords[k].tracking = settings.tracking;
-        paraWords[k].capitalization = settings.capitalization;
-        paraWords[k].alignToBaseline = settings.alignToBaseline;
-        // Apply other text attributes as needed
+        // Apply rule above settings
+        paragraph.ruleAboveColor = settings.ruleAboveColor;
+        paragraph.ruleAboveGapColor = settings.ruleAboveGapColor;
+        paragraph.ruleAboveGapOverprint = settings.ruleAboveGapOverprint;
+        paragraph.ruleAboveGapTint = settings.ruleAboveGapTint;
+        paragraph.ruleAboveLeftIndent = settings.ruleAboveLeftIndent;
+        paragraph.ruleAboveLineWeight = settings.ruleAboveLineWeight;
+        paragraph.ruleAboveOffset = settings.ruleAboveOffset;
+        paragraph.ruleAboveOverprint = settings.ruleAboveOverprint;
+        paragraph.ruleAboveRightIndent = settings.ruleAboveRightIndent;
+        paragraph.ruleAboveTint = settings.ruleAboveTint;
+        paragraph.ruleAboveType = settings.ruleAboveType;
+        paragraph.ruleAboveWidth = settings.ruleAboveWidth;
+
+        // Apply rule below settings
+        paragraph.ruleBelowColor = settings.ruleBelowColor;
+        paragraph.ruleBelowGapColor = settings.ruleBelowGapColor;
+        paragraph.ruleBelowGapOverprint = settings.ruleBelowGapOverprint;
+        paragraph.ruleBelowGapTint = settings.ruleBelowGapTint;
+        paragraph.ruleBelowLeftIndent = settings.ruleBelowLeftIndent;
+        paragraph.ruleBelowLineWeight = settings.ruleBelowLineWeight;
+        paragraph.ruleBelowOffset = settings.ruleBelowOffset;
+        paragraph.ruleBelowOverprint = settings.ruleBelowOverprint;
+        paragraph.ruleBelowRightIndent = settings.ruleBelowRightIndent;
+        paragraph.ruleBelowTint = settings.ruleBelowTint;
+        paragraph.ruleBelowType = settings.ruleBelowType;
+        paragraph.ruleBelowWidth = settings.ruleBelowWidth;
+
+        // Additional paragraph settings
+        paragraph.spaceBefore = settings.spaceBefore;
+        paragraph.spaceAfter = settings.spaceAfter;
+        paragraph.hyphenation = settings.hyphenation;
+
+        // Apply word-level settings to each word in the paragraph
+        var paraWords = paragraph.words.everyItem().getElements();
+        for (var k = 0; k < paraWords.length; k++) {
+            paraWords[k].appliedFont = settings.appliedFont;
+            paraWords[k].pointSize = settings.pointSize;
+            paraWords[k].fillColor = settings.fillColor;
+            paraWords[k].fillTint = settings.fillTint;
+            paraWords[k].leading = settings.leading;
+            paraWords[k].baselineShift = settings.baselineShift;
+            paraWords[k].tracking = settings.tracking;
+            paraWords[k].capitalization = settings.capitalization;
+            paraWords[k].alignToBaseline = settings.alignToBaseline;
+        }
     }
+}
+
+// Function to check if the style is unmodified (compare paragraph properties to the style)
+function isStyleUnmodified(paragraph, paragraphStyle) {
+    return paragraph.appliedFont === paragraphStyle.appliedFont &&
+           paragraph.pointSize === paragraphStyle.pointSize &&
+           paragraph.fillColor === paragraphStyle.fillColor &&
+           paragraph.leading === paragraphStyle.leading &&
+           paragraph.firstLineIndent === paragraphStyle.firstLineIndent;
 }
 
 // Helper function to map capitalization constants to InDesign values
@@ -229,10 +261,6 @@ function getCapitalization(constantValue) {
             return Capitalization.NORMAL;
         case 1936548720:
             return Capitalization.SMALL_CAPS;
-        case 1919251315:
-            return true; // For ruleAbove
-        case 1919251316:
-            return true; // For ruleBelow
         default:
             return Capitalization.NORMAL; // Default to normal capitalization
     }
