@@ -10,7 +10,7 @@
 
 
 
-// AutoRule script 
+// AutoRules script 
 // Set measurement units to points
 app.scriptPreferences.measurementUnit = MeasurementUnits.POINTS;
 
