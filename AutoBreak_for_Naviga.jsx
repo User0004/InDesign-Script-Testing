@@ -1,14 +1,11 @@
 // NAME:AutoBreak
-
 // Version ------------- NOTE ------------- This script will not work on text frames of which there is not previous text frame threaded, i.e. preventing errors regarding duplication of Naviga database boxes 
-
 // Status: Working  - conditional - This version of autobreak discriminates against text boxes which there is no previously threaded text frame
 // FUNCTION - To break text frames spanning =>2 columns into the their respective single columns while maintaing threading
 // OUTLINE - reads the size of columns, duplicates columns and threads 
 // Prefered keyboard shortcut is F5
 
-
-// Define the start function to initiate the column organization
+// AutoBreak
 function start() {
     var selectedFrame = app.activeDocument.selection[0];
 
