@@ -10,8 +10,6 @@
 // Updated code to handle swaps of differnt SplineItem subclasses, namely Oval | Rectangle | Polygon
 // Note user will be alerted to an error if they try to swap something with a GraphicLine -- aka just a straight line 
 
-
-
 //AutoSwap
 app.doScript(function () {
     if (app.selection.length !== 2) {
@@ -102,8 +100,11 @@ app.doScript(function () {
 
             // Function to adjust image position within the new frame
             function adjustImagePosition(object, offsetX, offsetY) {
-                if (object.constructor.name === "Rectangle" && object.images.length > 0) {
+                if ((object.constructor.name === "Rectangle" || 
+                     object.constructor.name === "Oval" || 
+                     object.constructor.name === "Polygon") && object.images.length > 0) {
                     var image = object.images[0];
+                    // Adjust geometric bounds for all shapes
                     image.geometricBounds = [
                         image.geometricBounds[0] + offsetY,
                         image.geometricBounds[1] + offsetX,
