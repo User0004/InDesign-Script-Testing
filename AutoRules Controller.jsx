@@ -37,7 +37,7 @@ function makeDialog() {
         staticTexts.add({ staticLabel: "Adjust top height:" });
         staticTexts.add({ staticLabel: "Adjust bottom height:" });
         staticTexts.add({ staticLabel: "Adjust stroke weight:" });
-        staticTexts.add({ staticLabel: "Stroke color:" });
+        staticTexts.add({ staticLabel: "Stroke colour:" });
     }
     with (d.dialogColumns.add()) {
         // Set fixed default values directly
