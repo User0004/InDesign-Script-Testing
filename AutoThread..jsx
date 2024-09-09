@@ -8,11 +8,10 @@
 
 
 //AutoThread
-var gScriptName = "Thread Text Frames (Left to Right)";
+var gScriptName = "Advanced Thread Text Frames (Bidirectional with Improved Error Handling)";
 
 try {
     app.doScript(main, undefined, undefined, UndoModes.ENTIRE_SCRIPT, gScriptName);
-    // Force a screen refresh to update the threading display (if necessary).
     app.menuActions.itemByName("$ID/Force Redraw").invoke();
 } catch (e) {
     alert(e + ". An error has occurred, try again.", gScriptName);
@@ -21,48 +20,40 @@ try {
 function main() {
     var selectedFrames = app.selection;
 
+    // Check if user has selected text frames
     if (selectedFrames.length < 2) {
         alert("Select at least two text frames to thread.", gScriptName);
         return;
     }
 
-    var allThreaded = true;
-    var threadedCount = 0;
-    var firstFrameThreaded = false;
-
-    // Determine if all selected frames are threaded
+    // Validate that all selected items are text frames
+    var textFrames = [];
     for (var i = 0; i < selectedFrames.length; i++) {
         if (selectedFrames[i] instanceof TextFrame) {
-            // Check if the frame has a previousTextFrame
-            if (selectedFrames[i].previousTextFrame != null) {
-                threadedCount++;
-            } else if (selectedFrames[i].nextTextFrame != null) {
-                // If it has a nextTextFrame, it is the first frame in a threading chain
-                firstFrameThreaded = true;
-                threadedCount++;
-            } else {
-                allThreaded = false;
-            }
+            textFrames.push(selectedFrames[i]);
         }
     }
 
-    // If all frames are threaded (including the first in a chain), show the appropriate message
-    if (allThreaded && (threadedCount === selectedFrames.length)) {
-        alert("All selected frames are already threaded. Please select frames that are not yet threaded.", gScriptName);
+    if (textFrames.length < 2) {
+        alert("Please select at least two valid text frames.", gScriptName);
         return;
     }
 
-    // Show error if more than one previously threaded frame is selected
-    if (threadedCount > 1) {
-        alert("Please ensure no more than one previously threaded text frame is part of your selection, then try again.", gScriptName);
-        return;
+    // Sort frames by horizontal position
+    textFrames.sort(compareFramesByPosition);
+
+    // Determine the starting frame of the thread
+    var startingFrame = findStartingFrame(textFrames);
+
+    // Determine the threading direction
+    var threadingDirection = determineDirection(textFrames);
+
+    // Re-threading logic
+    try {
+        rethreadFrames(textFrames, startingFrame, threadingDirection);
+    } catch (e) {
+        alert("Error during rethreading: " + e.message, gScriptName);
     }
-
-    // Sort the selected frames by their position
-    selectedFrames.sort(compareFramesByPosition);
-
-    // Thread the frames, starting from the leftmost one
-    threadFrames(selectedFrames);
 }
 
 function compareFramesByPosition(frameA, frameB) {
@@ -70,15 +61,65 @@ function compareFramesByPosition(frameA, frameB) {
     return frameA.geometricBounds[1] - frameB.geometricBounds[1];
 }
 
-function threadFrames(frames) {
-    var previousFrame = frames[0]; // Extract the starting point here
+function determineDirection(frames) {
+    // Compare positions of the first and last frame
+    var firstX = frames[0].geometricBounds[1];
+    var lastX = frames[frames.length - 1].geometricBounds[1];
+    return firstX < lastX ? "leftToRight" : "rightToLeft";
+}
 
-    for (var i = 1; i < frames.length; i++) {
-        var currentFrame = frames[i];
-
-        // Thread the current frame to the previous one
-        currentFrame.previousTextFrame = previousFrame;
-
-        previousFrame = currentFrame;
+function findStartingFrame(frames) {
+    // Check if any frame is a part of a thread
+    var threadedFrames = [];
+    
+    // Helper function to check if an array contains an element
+    function arrayContains(array, element) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === element) {
+                return true;
+            }
+        }
+        return false;
     }
+
+    for (var i = 0; i < frames.length; i++) {
+        var frame = frames[i];
+
+        if (frame.previousTextFrame && !arrayContains(frames, frame.previousTextFrame)) {
+            threadedFrames.push(frame.previousTextFrame);
+        }
+        if (frame.nextTextFrame && !arrayContains(frames, frame.nextTextFrame)) {
+            threadedFrames.push(frame.nextTextFrame);
+        }
+    }
+
+    if (threadedFrames.length > 0) {
+        // Determine the farthest left (or right) frame
+        var sortedThreadedFrames = threadedFrames.concat(frames).sort(compareFramesByPosition);
+        return sortedThreadedFrames[0];
+    }
+
+    // If no threaded frames are found, return the first frame in the selection
+    return frames[0];
+}
+
+function rethreadFrames(frames, startingFrame, direction) {
+    var currentFrame = startingFrame;
+
+    // Thread the frames based on the direction
+    for (var i = 0; i < frames.length; i++) {
+        if (direction === "leftToRight") {
+            if (currentFrame.nextTextFrame !== frames[i] && currentFrame != frames[i]) {
+                currentFrame.nextTextFrame = frames[i];
+            }
+            currentFrame = frames[i];
+        } else if (direction === "rightToLeft") {
+            if (currentFrame.previousTextFrame !== frames[i] && currentFrame != frames[i]) {
+                currentFrame.previousTextFrame = frames[i];
+            }
+            currentFrame = frames[i];
+        }
+    }
+
+    // No alerts here
 }
