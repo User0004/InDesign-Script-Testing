@@ -121,5 +121,4 @@ function rethreadFrames(frames, startingFrame, direction) {
         }
     }
 
-    // No alerts here
 }
