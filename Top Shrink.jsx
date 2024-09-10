@@ -13,6 +13,20 @@
 
 
 //Top Shrink
+// NAME:Top Expand , Top Shrink, Bottom Expand, Bottom Shrink 
+// Status: Working 
+// FUNCTION - To perform an increase or decrease of the height of one or more selected items - which vary in their heights - by the unit of one baseline for each time a script is run 
+// InDesign cannot by default allow a user to change the height of all boxes in a selection at the same time while maintaining a fixed position of selections opposite to that being expanded or shrinked 
+// The script means a designer can expand or shrink an entire story in one go 
+// OUTLINE - Script reads baseline grid size and either adds or subtracks baseline height to overall height of selections 
+
+// Prefered keyboard shortcut is Top Expand F9, Top Shrink Shift+9, Bottom Expand F10 , Bottom Shrink Shift F10
+
+
+
+
+
+// Bottom shrink
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -21,27 +35,35 @@ app.doScript(function() {
     var gridPreferences = doc.gridPreferences;
     var baselineIncrement = gridPreferences.baselineDivision;
 
-    // Function to adjust height from the top downwards
+    // Add a precision threshold to handle floating-point precision issues
+    var precisionThreshold = 0.1; // This helps to avoid errors when height is close to baselineIncrement
+
+    // Function to adjust height
     function adjustHeight(item) {
         var currentHeight = item.geometricBounds[2] - item.geometricBounds[0];
-        
-        if (currentHeight <= baselineIncrement) {
-            // If the height is less than or equal to the baseline increment, move the item downwards
-            var direction = (baselineIncrement > 0) ? 1 : -1; // Text flows down or up
-            
-            // Adjust geometric bounds to move downwards by one baseline increment
-            item.geometricBounds = [
-                item.geometricBounds[0] + direction * baselineIncrement,  // Top edge Y-coordinate moves downwards
-                item.geometricBounds[1],  // Left edge X-coordinate remains the same
-                item.geometricBounds[2] + direction * baselineIncrement, // Bottom edge moves downwards
-                item.geometricBounds[3]  // Right edge X-coordinate remains the same
-            ];
+
+        if (currentHeight > baselineIncrement + precisionThreshold) {
+            // Case 1: Reduce the bottom edge to shrink the height
+            if (item instanceof Image && item.parent instanceof Rectangle) {
+                // Adjust the height of the parent frame, not the image itself
+                adjustHeight(item.parent);
+            } else {
+                item.geometricBounds = [
+                    item.geometricBounds[0] + baselineIncrement, 
+                    item.geometricBounds[1], 
+                    item.geometricBounds[2], 
+                    item.geometricBounds[3]
+                ];
+            }
         } else {
-            // If the height is greater than the baseline increment, adjust normally
+            // Case 2: Move the item upwards if its height is equal to or less than one baseline (within threshold)
+            var moveAmount = Math.abs(baselineIncrement); // Ensure positive value
+
+            // Move the object upwards by one baseline increment without changing its height
             item.geometricBounds = [
-                item.geometricBounds[0] + baselineIncrement, // Adjust top edge downwards
-                item.geometricBounds[1], 
-                item.geometricBounds[2], 
+                item.geometricBounds[0] + moveAmount,
+                item.geometricBounds[1],
+                item.geometricBounds[2] + moveAmount,
                 item.geometricBounds[3]
             ];
         }
