@@ -1,6 +1,3 @@
-// work in progrees improvement to shrink scritps 
-
-//shrink from bottom
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -66,44 +63,31 @@ app.doScript(function() {
         };
     }
 
-    // Function to ensure smaller item is centered within the larger item
-    function ensureSmallerGroupItemIsCentre(smallGroupItem, largeGroupItem) {
+    // Function to resize and center the smaller group item
+    function resizeAndCenterSmallerGroupItem(smallGroupItem, largeGroupItem) {
         var largeTop = largeGroupItem.geometricBounds[0];
         var largeBottom = largeGroupItem.geometricBounds[2];
         var largeCenter = (largeTop + largeBottom) / 2;
 
-        var smallHeight = smallGroupItem.geometricBounds[2] - smallGroupItem.geometricBounds[0];
-        var smallTop = largeCenter - (smallHeight / 2);
-       
-        // Adjust the smaller item’s vertical position to be centered within the larger one
+        // Calculate the new height and top position for the smaller item
+        var smallWidth = smallGroupItem.geometricBounds[3] - smallGroupItem.geometricBounds[1];
+        var smallNewTop = largeCenter - (baselineIncrement / 2);
+
+        // Resize the smaller item to match baseline increment
         smallGroupItem.geometricBounds = [
-            smallTop,
+            smallNewTop,
             smallGroupItem.geometricBounds[1],
-            smallTop + smallHeight,
+            smallNewTop + baselineIncrement,
             smallGroupItem.geometricBounds[3]
         ];
-    }
 
-    // Function to resize the smaller group item to match baseline increment
-    function smallerGroupItemSize(smallGroupItem) {
-        smallGroupItem.geometricBounds = [
-            smallGroupItem.geometricBounds[0] + baselineIncrement ,
-            smallGroupItem.geometricBounds[1],
-            smallGroupItem.geometricBounds[0],
-            smallGroupItem.geometricBounds[3]
-        ];
-    }
-
-    // Function to offset the position of the smaller group item
-    function offsetSmallGroupItem(smallGroupItem) {
-        var offsetAmount = baselineIncrement / 2;
+        // Adjust the smaller item’s horizontal position if necessary
         var currentBounds = smallGroupItem.geometricBounds;
-
         smallGroupItem.geometricBounds = [
-            currentBounds[0] + offsetAmount,
+            currentBounds[0],
             currentBounds[1],
-            currentBounds[2] + offsetAmount,
-            currentBounds[3]
+            currentBounds[2],
+            currentBounds[3] // No horizontal adjustment needed in this case
         ];
     }
 
@@ -113,14 +97,8 @@ app.doScript(function() {
             // If the item is a group with exactly two items, find smaller and larger items
             var groupItems = findSmallerGroupItem(item);
 
-            // Ensure the smaller item is centered within the larger item
-            ensureSmallerGroupItemIsCentre(groupItems.smallGroupItem, groupItems.largeGroupItem);
-
-            // Resize the smaller group item
-            smallerGroupItemSize(groupItems.smallGroupItem);
-
-            // Offset the smaller group item
-            offsetSmallGroupItem(groupItems.smallGroupItem);
+            // Resize and center the smaller item within the larger item
+            resizeAndCenterSmallerGroupItem(groupItems.smallGroupItem, groupItems.largeGroupItem);
 
             // Now adjust the height of the larger item as well
             adjustHeight(groupItems.largeGroupItem);
@@ -135,7 +113,7 @@ app.doScript(function() {
             // Check if the image is inside a rectangle (frame)
             var parent = item.parent;
             if (parent instanceof Rectangle) {
-                adjustHeight(parent); // Adjust the frame's height, not the image itself
+                adjustHeight(parent);
             } else {
                 adjustHeight(item);
             }
