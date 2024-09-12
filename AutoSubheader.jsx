@@ -1,12 +1,12 @@
 // NAME: AutoSubheader
-// Status: Working - This script is constantly being refined - as it currently works on hard coding in attributes which for DT works well but more efficient means could be developed
-// FUNCTION - To search for an array of words which are <10 in length and apply the first instance subheader throughout following text
-// The script allows the designer to have many stacked subheaders in which the respective subheader can be applied throughout the copy 
-// OUTLINE - reads the design a user applies to text and applies same design throughout paragraph meeting correct criteria
-// This is a sister script AutoList ---- this script must have body copy paragraphs it cannot do lists ----- the list script can do lists ----- logic throughout the script will render why this is 
+// Status: Ready
+// FUNCTION: To search for an array of words which are under 10 in length and apply the first instance subheader throughout following text
+// The script allows the designer to have many stacked subheaders that can be applied throughout the copy with as many enters intween as they like
+// This is a sister script AutoList 
 // Preferred keyboard shortcut is F2
 
 // AutoSubheader
+
 // Main function to find and apply text settings to consecutive paragraphs
 function findAndApplyTextSettings() {
     if (app.documents.length > 0) {
