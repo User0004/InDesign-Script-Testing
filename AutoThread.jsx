@@ -1,9 +1,8 @@
 // NAME:AutoThread
-// Status: Working  - works but improvements can be made regarding alert messages etc 
-// FUNCTION - user selects last threaded text box and all other non threaded text boxes  - the script will then thread them left to right 
-// Threading boxes is tedious as InDesign requires users to navigate to bottom right hand corner for each box they must thread - this script does it in one go
-// OUTLINE - 
+// STATUS: Ready
+// FUNCTION: to thread a selection of text from left to right no matter the order a users selections
 // Prefered keyboard shortcut is F7
+
 
 
 
