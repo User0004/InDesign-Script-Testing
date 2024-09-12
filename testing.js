@@ -1,3 +1,4 @@
+//shrink from bottom
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -68,19 +69,29 @@ app.doScript(function() {
         var largeTop = largeGroupItem.geometricBounds[0];
         var largeBottom = largeGroupItem.geometricBounds[2];
         var largeCenter = (largeTop + largeBottom) / 2;
+        var baselineIncrementOffset = baselineIncrement / 2;
 
-        // Calculate the new height and top position for the smaller item
+    // Calculate the new height and top position for the smaller item
         var smallWidth = smallGroupItem.geometricBounds[3] - smallGroupItem.geometricBounds[1];
         var smallNewTop = largeCenter - (baselineIncrement / 2);
 
-        // Resize the smaller item to match baseline increment
-        smallGroupItem.geometricBounds = [
-            smallNewTop,
-            smallGroupItem.geometricBounds[1],
-            smallNewTop + baselineIncrement,
-            smallGroupItem.geometricBounds[3]
-        ];
-    }
+    // Resize the smaller item to match baseline increment
+    smallGroupItem.geometricBounds = [
+        smallNewTop,
+        smallGroupItem.geometricBounds[1],
+        smallNewTop + baselineIncrement /2,
+        smallGroupItem.geometricBounds[3]
+    ];
+
+    // Offset the smaller box upwards by half a baseline increment
+    smallGroupItem.geometricBounds = [
+        smallGroupItem.geometricBounds[0] - baselineIncrementOffset, // Move top up
+        smallGroupItem.geometricBounds[1],
+        smallGroupItem.geometricBounds[2] - baselineIncrementOffset, // Move bottom up
+        smallGroupItem.geometricBounds[3]
+    ];
+}
+
 
     // Function to process each item or group recursively
     function processItem(item) {
