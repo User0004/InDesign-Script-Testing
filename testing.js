@@ -1,3 +1,6 @@
+// this is a test file, not for use within indesign 
+
+
 app.doScript(function() {
     var doc = app.activeDocument;
 
