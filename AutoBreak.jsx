@@ -1,8 +1,7 @@
 // NAME:AutoBreak
-// Version ------------- NOTE ------------- This script will not work on text frames of which there is not previous text frame threaded, i.e. preventing errors regarding duplication of Naviga database boxes 
-// Status: Working  - conditional - This version of autobreak discriminates against text boxes which there is no previously threaded text frame
-// FUNCTION - To break text frames spanning =>2 columns into the their respective single columns while maintaing threading
-// OUTLINE - reads the size of columns, duplicates columns and threads 
+// Status: Ready 
+// FUNCTION: Splits a selected text frame with multiple columns into separate linked columns in Adobe InDesign, while preserving the text flow and layout. 
+// Note: The script will not work on sensitive first box database items for header, body, and captions.
 // Prefered keyboard shortcut is F5
 
 // AutoBreak
