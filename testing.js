@@ -1,6 +1,3 @@
-//working bottom shrink with image support 
-
-
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
