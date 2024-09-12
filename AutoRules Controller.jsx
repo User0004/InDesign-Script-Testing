@@ -1,15 +1,11 @@
-// NAME:AutoRules
-// Status: Working 
+// NAME:AutoRules Controller 
+// STATUS: Ready
 // FUNCTION - Adds rules inbetween selections of differnt types i.e. graphic frames text boxes etc 
 // OUTLINE - Pairs with another script AutoRules Controller (below) which creates a xml file containing the attribues of the rules wanted by a designer 
 // If a designer does not need to run the AutoRules Controller one may simply run the AutoRules which as been set up to work from default settings appropriate for DT pages 
 // The script has some preset values which are the default values making it easy back to the regular rules
 // The script can work out how high or low to place rules based on neighbouring heights of selections PLUS selections can be made across spreads without placing rules in the gutter 
 // Prefered keyboard not needed as it is rare that it should be needed but well worth keeping for special supplements etc 
-
-
-
-
 
 
 // AutoRules Controller
