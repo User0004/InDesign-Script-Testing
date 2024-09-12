@@ -1,3 +1,6 @@
+//working bottom shrink with image support 
+
+
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -20,7 +23,7 @@ app.doScript(function() {
             } else {
                 item.geometricBounds = [
                     item.geometricBounds[0],
-                    item.geometricBounds[1], 
+                    item.geometricBounds[1],
                     item.geometricBounds[2] - baselineIncrement,
                     item.geometricBounds[3]
                 ];
@@ -40,8 +43,8 @@ app.doScript(function() {
 
     // Function to find and assign smaller and larger items in a group of two
     function findSmallerGroupItem(group) {
-        var groupItem1 = group.allPageItems[0];
-        var groupItem2 = group.allPageItems[1];
+        var groupItem1 = group.pageItems[0];
+        var groupItem2 = group.pageItems[1];
 
         var heightItem1 = groupItem1.geometricBounds[2] - groupItem1.geometricBounds[0];
         var heightItem2 = groupItem2.geometricBounds[2] - groupItem2.geometricBounds[0];
@@ -80,20 +83,11 @@ app.doScript(function() {
             smallNewTop + baselineIncrement,
             smallGroupItem.geometricBounds[3]
         ];
-
-        // Adjust the smaller item’s horizontal position if necessary
-        var currentBounds = smallGroupItem.geometricBounds;
-        smallGroupItem.geometricBounds = [
-            currentBounds[0],
-            currentBounds[1],
-            currentBounds[2],
-            currentBounds[3] // No horizontal adjustment needed in this case
-        ];
     }
 
     // Function to process each item or group recursively
     function processItem(item) {
-        if (item instanceof Group && item.allPageItems.length === 2) {
+        if (item instanceof Group && item.pageItems.length === 2) {
             // If the item is a group with exactly two items, find smaller and larger items
             var groupItems = findSmallerGroupItem(item);
 
@@ -106,8 +100,8 @@ app.doScript(function() {
         } else if (item instanceof GraphicLine || item instanceof TextFrame || item instanceof Rectangle) {
             adjustHeight(item);
         } else if (item instanceof Group) {
-            for (var j = 0; j < item.allPageItems.length; j++) {
-                processItem(item.allPageItems[j]);
+            for (var j = 0; j < item.pageItems.length; j++) {
+                processItem(item.pageItems[j]);
             }
         } else if (item instanceof Image) {
             // Check if the image is inside a rectangle (frame)
