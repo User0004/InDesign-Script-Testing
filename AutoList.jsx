@@ -1,10 +1,10 @@
 // NAME:AutoList
-// Status: Working  - This script is constantly being refined - as it currently works on hard coding in attributes which for DT works well but more efficent means could be developed
-// FUNCTION - To search for an array of words which are <10 in length not contaning a period (with exceptions) and apply the first instance subheader throughout following text
-// The script allows the designer to have many stacked subheaders in which the respective subheader can be applyied throughout the copy 
-// OUTLINE - reads the design a user applies to text and applies same design throughout paragraph meeting correct criteria
-// This is a sister script to AutoSubheader ---- this script works where there is not bodycopy paragraphs, think of lists such as Product + Price, Gov Spending + £000  etc 
-// Prefered keyboard shortcut is Shift + F2
+// STATUS: Ready 
+// FUNCTION: To search for an array of words which is under 10 in length not contaning a period (with exceptions) and apply the first instance    subheader throughout following text
+// The script allows the designer to have many stacked subheaders of differnt styles. However the chain of styles is broken upon a hard enter
+// This is a sister script to AutoSubheader ---- this script works where there is bodycopy paragraphs and many  
+// Updates: There are hard coded styles, would be good to improve it by making a temp parageaph style 
+// Prefered keyboard shortcut is Shift + F2 
 
 //AutoList
 function findAndApplyTextSettings() {
