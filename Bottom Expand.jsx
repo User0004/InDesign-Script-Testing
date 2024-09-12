@@ -9,7 +9,6 @@
 
 
 //Bottom Expand
-
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -18,29 +17,32 @@ app.doScript(function() {
     var gridPreferences = doc.gridPreferences;
     var baselineIncrement = gridPreferences.baselineDivision;
 
+    // Add a precision threshold to handle floating-point precision issues
+    var precisionThreshold = 0.1; // This helps to avoid errors when height is close to baselineIncrement
+
     // Function to adjust height
     function adjustHeight(item) {
         var currentHeight = item.geometricBounds[2] - item.geometricBounds[0];
         
-        if (currentHeight <= baselineIncrement) {
-            // If the height is less than or equal to the baseline increment, move the item in the direction of text flow
-            var direction = (baselineIncrement > 0) ? 1 : -1; // Determine if text flows down or up
-            var moveAmount = Math.abs(baselineIncrement); // Absolute value of baseline increment
-            
-            // Adjust geometric bounds based on text flow direction
-            item.geometricBounds = [
-                item.geometricBounds[0] + direction * moveAmount,
-                item.geometricBounds[1], // Left edge X-coordinate remains the same
-                item.geometricBounds[2] + direction * moveAmount, // Expand height from the bottom
-                item.geometricBounds[3]  // Right edge X-coordinate remains the same
-            ];
-        } else {
-            // If the height is greater than the baseline increment, expand height from the bottom
-            var newHeight = currentHeight + baselineIncrement;
+        // Case 1: Shrink the height if it's greater than the baseline increment + threshold
+        if (currentHeight > baselineIncrement + precisionThreshold) {
+            // Reduce the bottom edge to shrink the height
             item.geometricBounds = [
                 item.geometricBounds[0], 
                 item.geometricBounds[1], 
                 item.geometricBounds[2] + baselineIncrement, 
+                item.geometricBounds[3]
+            ];
+        } 
+        // Case 2: Move the item upwards if its height is equal to or less than one baseline (within threshold)
+        else {
+            var moveAmount = Math.abs(baselineIncrement); // Ensure positive value
+
+            // Move the object upwards by one baseline increment without changing its height
+            item.geometricBounds = [
+                item.geometricBounds[0] - moveAmount,
+                item.geometricBounds[1],
+                item.geometricBounds[2] - moveAmount,
                 item.geometricBounds[3]
             ];
         }
