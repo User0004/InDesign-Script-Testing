@@ -16,31 +16,29 @@ app.doScript(function() {
     var baselineIncrement = gridPreferences.baselineDivision;
 
     // Add a precision threshold to handle floating-point precision issues
-    var precisionThreshold = 0.1; // This helps to avoid errors when height is close to baselineIncrement
+    var precisionThreshold = 0.1; // Helps to avoid errors when height is close to baselineIncrement
 
-    // Function to adjust height
+    // Function to adjust height from the top downwards
     function adjustHeight(item) {
         var currentHeight = item.geometricBounds[2] - item.geometricBounds[0];
         
-        // Case 1: Shrink the height if it's greater than the baseline increment + threshold
-        if (currentHeight > baselineIncrement + precisionThreshold) {
-            // Reduce the bottom edge to shrink the height
+        if (currentHeight <= baselineIncrement + precisionThreshold) {
+            // If the height is less than or equal to the baseline increment (with tolerance), move the item downwards
+            var direction = (baselineIncrement > 0) ? 1 : -1; // Text flows down or up
+            
+            // Adjust geometric bounds to move downwards by one baseline increment
             item.geometricBounds = [
-                item.geometricBounds[0] + baselineIncrement, 
+                item.geometricBounds[0] + direction * baselineIncrement,  // Top edge Y-coordinate moves downwards
+                item.geometricBounds[1],  // Left edge X-coordinate remains the same
+                item.geometricBounds[2] + direction * baselineIncrement,  // Bottom edge moves downwards
+                item.geometricBounds[3]  // Right edge X-coordinate remains the same
+            ];
+        } else {
+            // If the height is greater than the baseline increment (with tolerance), adjust normally
+            item.geometricBounds = [
+                item.geometricBounds[0] + baselineIncrement, // Adjust top edge downwards
                 item.geometricBounds[1], 
                 item.geometricBounds[2], 
-                item.geometricBounds[3]
-            ];
-        } 
-        // Case 2: Move the item upwards if its height is equal to or less than one baseline (within threshold)
-        else {
-            var moveAmount = Math.abs(baselineIncrement); // Ensure positive value
-
-            // Move the object upwards by one baseline increment without changing its height
-            item.geometricBounds = [
-                item.geometricBounds[0] - moveAmount,
-                item.geometricBounds[1],
-                item.geometricBounds[2] - moveAmount,
                 item.geometricBounds[3]
             ];
         }
@@ -53,15 +51,6 @@ app.doScript(function() {
         } else if (item instanceof Group) {
             for (var j = 0; j < item.allPageItems.length; j++) {
                 processItem(item.allPageItems[j]);
-            }
-        } else if (item instanceof Image) {
-            // Check if the image is inside a rectangle (frame)
-            var parent = item.parent;
-            if (parent instanceof Rectangle) {
-                adjustHeight(parent); // Adjust the frame's height, not the image itself
-            } else {
-                // For standalone images not inside a rectangle, adjust the image's bounds directly
-                adjustHeight(item);
             }
         } else {
             alert("Selection contains unsupported items. Please select only vertical rules, text frames, picture boxes, or groups.");
@@ -77,4 +66,4 @@ app.doScript(function() {
             processItem(app.selection[i]);
         }
     }
-}, ScriptLanguage.JAVASCRIPT, null, UndoModes.ENTIRE_SCRIPT, "Adjust Item Height Based on Baseline Increment");
+}, ScriptLanguage.JAVASCRIPT, null, UndoModes.ENTIRE_SCRIPT, "Adjust Item Height Based on Baseline Increment with Precision Tolerance");
