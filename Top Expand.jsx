@@ -5,8 +5,9 @@
 // Prefered keyboard shortcut is Top Expand F9
 
 
-//Top Expand
 
+
+//Top Expand
 // Define the script as a function to be executed
 app.doScript(function() {
     // Get the active document
