@@ -1,5 +1,5 @@
 // NAME:AutoBreak
-// Status: Ready 
+// STATUS: Ready 
 // FUNCTION: Splits a selected text frame with multiple columns into separate linked columns in Adobe InDesign, while preserving the text flow and layout. 
 // Note: The script will not work on sensitive first box database items for header, body, and captions.
 // Prefered keyboard shortcut is F5
