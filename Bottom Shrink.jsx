@@ -4,8 +4,8 @@
 // Best to use on non group grouped items for Nav. If needed use white arrow to handle groups, but black arrow is find for text boxes 
 // Prefered keyboard shortcut is Bottom Shrink shift F10
 
-
 // Bottom shrink
+// done
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -20,26 +20,29 @@ app.doScript(function() {
     // Function to adjust height
     function adjustHeight(item) {
         var currentHeight = item.geometricBounds[2] - item.geometricBounds[0];
-        
-        // Case 1: Shrink the height if it's greater than the baseline increment + threshold
+
         if (currentHeight > baselineIncrement + precisionThreshold) {
-            // Reduce the bottom edge to shrink the height
-            item.geometricBounds = [
-                item.geometricBounds[0], 
-                item.geometricBounds[1], 
-                item.geometricBounds[2] - baselineIncrement, 
-                item.geometricBounds[3]
-            ];
-        } 
-        // Case 2: Move the item upwards if its height is equal to or less than one baseline (within threshold)
-        else {
+            // Case 1: Reduce the bottom edge to shrink the height
+            if (item instanceof Image && item.parent instanceof Rectangle) {
+                // Adjust the height of the parent frame, not the image itself
+                adjustHeight(item.parent);
+            } else {
+                item.geometricBounds = [
+                    item.geometricBounds[0] + baselineIncrement, 
+                    item.geometricBounds[1], 
+                    item.geometricBounds[2], 
+                    item.geometricBounds[3]
+                ];
+            }
+        } else {
+            // Case 2: Move the item upwards if its height is equal to or less than one baseline (within threshold)
             var moveAmount = Math.abs(baselineIncrement); // Ensure positive value
 
             // Move the object upwards by one baseline increment without changing its height
             item.geometricBounds = [
-                item.geometricBounds[0] - moveAmount,
+                item.geometricBounds[0] + moveAmount,
                 item.geometricBounds[1],
-                item.geometricBounds[2] - moveAmount,
+                item.geometricBounds[2] + moveAmount,
                 item.geometricBounds[3]
             ];
         }
