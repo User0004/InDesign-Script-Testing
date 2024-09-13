@@ -5,8 +5,6 @@
 // Prefered keyboard shortcut is Bottom Shrink shift F10
 
 // Bottom shrink
-// USE from here 
-
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
