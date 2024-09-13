@@ -19,19 +19,13 @@ app.doScript(function() {
     // Function to adjust height
     function adjustHeight(item) {
         var currentHeight = item.geometricBounds[2] - item.geometricBounds[0];
-        
+
         if (currentHeight <= baselineIncrement + precisionThreshold) {
-            // If the height is less than or equal to the baseline increment (with tolerance), move the item in the direction of text flow
-            var direction = (baselineIncrement > 0) ? 1 : -1; // Determine if text flows down or up
+            // If the height is less than or equal to the baseline increment (with tolerance), move the item upwards
             var moveAmount = Math.abs(baselineIncrement); // Absolute value of baseline increment
             
-            // Adjust geometric bounds based on text flow direction
-            item.geometricBounds = [
-                item.geometricBounds[0] - direction * moveAmount,
-                item.geometricBounds[1], // Left edge X-coordinate remains the same
-                item.geometricBounds[2] - direction * moveAmount,
-                item.geometricBounds[3]  // Right edge X-coordinate remains the same
-            ];
+            // Use the move method to move the item upwards
+            item.move(undefined, [0, -moveAmount]);
         } else if (currentHeight > baselineIncrement + precisionThreshold) {
             // If the height is greater than the baseline increment, reduce height from the bottom
             if (item instanceof Image && item.parent instanceof Rectangle) {
@@ -39,26 +33,42 @@ app.doScript(function() {
                 adjustHeight(item.parent);
             } else {
                 var newHeight = currentHeight - baselineIncrement;
+
+                // Check to ensure the new height does not go below one baseline increment
+                if (newHeight < baselineIncrement) {
+                    newHeight = baselineIncrement;
+                }
+                
+                var originalBounds = item.geometricBounds;
+                var moveAmount = currentHeight - newHeight;
+
+                // Adjust the height by shrinking from the bottom
                 item.geometricBounds = [
-                    item.geometricBounds[0], 
-                    item.geometricBounds[1], 
-                    item.geometricBounds[2] - baselineIncrement, 
-                    item.geometricBounds[3]
+                    originalBounds[0] + moveAmount,  // Move the top edge down to achieve the new height
+                    originalBounds[1],              // Left edge remains the same
+                    originalBounds[2],              // Bottom edge remains the same
+                    originalBounds[3]               // Right edge remains the same
                 ];
+
+                // If it's a text frame or a rectangle, move the contents up after resizing the frame
+                if (item instanceof TextFrame || item instanceof Rectangle || item instanceof GraphicLine) {
+                    item.move(undefined, [0, -moveAmount]); // Move the contents up after shrinking from the bottom
+                }
             }
         }
     }
 
     // Function to process each item or group recursively
     function processItem(item) {
-        if (item instanceof GraphicLine || item instanceof TextFrame || item instanceof Rectangle) {
+        if (item instanceof GraphicLine || item instanceof TextFrame || item instanceof Rectangle || item instanceof Image) {
             adjustHeight(item);
         } else if (item instanceof Group) {
             for (var j = 0; j < item.allPageItems.length; j++) {
                 processItem(item.allPageItems[j]);
             }
         } else {
-            alert("Selection contains unsupported items. Please select only vertical rules, text frames, picture boxes, or groups.");
+            // Continue processing without alerting
+            // Commented out: alert("Selection contains unsupported items. Please select only vertical rules, text frames, picture boxes, or groups.");
         }
     }
 
