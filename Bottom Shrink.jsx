@@ -5,7 +5,8 @@
 // Prefered keyboard shortcut is Bottom Shrink shift F10
 
 // Bottom shrink
-// done
+// USE from here 
+
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
@@ -20,31 +21,33 @@ app.doScript(function() {
     // Function to adjust height
     function adjustHeight(item) {
         var currentHeight = item.geometricBounds[2] - item.geometricBounds[0];
-
-        if (currentHeight > baselineIncrement + precisionThreshold) {
-            // Case 1: Reduce the bottom edge to shrink the height
+        
+        if (currentHeight <= baselineIncrement + precisionThreshold) {
+            // If the height is less than or equal to the baseline increment (with tolerance), move the item in the direction of text flow
+            var direction = (baselineIncrement > 0) ? 1 : -1; // Determine if text flows down or up
+            var moveAmount = Math.abs(baselineIncrement); // Absolute value of baseline increment
+            
+            // Adjust geometric bounds based on text flow direction
+            item.geometricBounds = [
+                item.geometricBounds[0] - direction * moveAmount,
+                item.geometricBounds[1], // Left edge X-coordinate remains the same
+                item.geometricBounds[2] - direction * moveAmount,
+                item.geometricBounds[3]  // Right edge X-coordinate remains the same
+            ];
+        } else if (currentHeight > baselineIncrement + precisionThreshold) {
+            // If the height is greater than the baseline increment, reduce height from the bottom
             if (item instanceof Image && item.parent instanceof Rectangle) {
                 // Adjust the height of the parent frame, not the image itself
                 adjustHeight(item.parent);
             } else {
+                var newHeight = currentHeight - baselineIncrement;
                 item.geometricBounds = [
-                    item.geometricBounds[0] + baselineIncrement, 
+                    item.geometricBounds[0], 
                     item.geometricBounds[1], 
-                    item.geometricBounds[2], 
+                    item.geometricBounds[2] - baselineIncrement, 
                     item.geometricBounds[3]
                 ];
             }
-        } else {
-            // Case 2: Move the item upwards if its height is equal to or less than one baseline (within threshold)
-            var moveAmount = Math.abs(baselineIncrement); // Ensure positive value
-
-            // Move the object upwards by one baseline increment without changing its height
-            item.geometricBounds = [
-                item.geometricBounds[0] + moveAmount,
-                item.geometricBounds[1],
-                item.geometricBounds[2] + moveAmount,
-                item.geometricBounds[3]
-            ];
         }
     }
 
@@ -55,15 +58,6 @@ app.doScript(function() {
         } else if (item instanceof Group) {
             for (var j = 0; j < item.allPageItems.length; j++) {
                 processItem(item.allPageItems[j]);
-            }
-        } else if (item instanceof Image) {
-            // Check if the image is inside a rectangle (frame)
-            var parent = item.parent;
-            if (parent instanceof Rectangle) {
-                adjustHeight(parent); // Adjust the frame's height, not the image itself
-            } else {
-                // For standalone images not inside a rectangle, adjust the image's bounds directly
-                adjustHeight(item);
             }
         } else {
             alert("Selection contains unsupported items. Please select only vertical rules, text frames, picture boxes, or groups.");
