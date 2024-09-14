@@ -15,6 +15,7 @@
 
 
 //AutoSwap
+
 app.doScript(function () {
     if (app.selection.length !== 2) {
         alert("Please select exactly two objects.");
@@ -97,36 +98,42 @@ app.doScript(function () {
             function adjustGroupImagesPosition(group, offsetX, offsetY) {
                 if (group.constructor.name === "Group") {
                     for (var i = 0; i < group.allPageItems.length; i++) {
-                        adjustImagePosition(group.allPageItems[i], offsetX, offsetY);
+                        adjustMediaPosition(group.allPageItems[i], offsetX, offsetY);
                     }
                 }
             }
 
-            // Function to adjust image position within the new frame
-            function adjustImagePosition(object, offsetX, offsetY) {
+            // Function to adjust media position (images and graphics) within the new frame
+            function adjustMediaPosition(object, offsetX, offsetY) {
                 if ((object.constructor.name === "Rectangle" || 
                      object.constructor.name === "Oval" || 
-                     object.constructor.name === "Polygon") && object.images.length > 0) {
-                    var image = object.images[0];
+                     object.constructor.name === "Polygon") && 
+                    (object.images.length > 0 || object.graphics.length > 0)) {
+                    
+                    // Handle both images and graphics (including .eps)
+                    var media = object.images.length > 0 ? object.images[0] : object.graphics[0];
+
                     // Adjust geometric bounds for all shapes
-                    image.geometricBounds = [
-                        image.geometricBounds[0] + offsetY,
-                        image.geometricBounds[1] + offsetX,
-                        image.geometricBounds[2] + offsetY,
-                        image.geometricBounds[3] + offsetX
+                    media.geometricBounds = [
+                        media.geometricBounds[0] + offsetY,
+                        media.geometricBounds[1] + offsetX,
+                        media.geometricBounds[2] + offsetY,
+                        media.geometricBounds[3] + offsetX
                     ];
                 }
             }
 
-            // Function to fit content in images with proportional adjustment for all shapes
-            function fitContentInImagesProportionally(object, fitOption) {
+            // Function to fit content in images/graphics with proportional adjustment for all shapes
+            function fitContentInMediaProportionally(object, fitOption) {
                 if ((object.constructor.name === "Rectangle" || 
                      object.constructor.name === "Oval" || 
-                     object.constructor.name === "Polygon") && object.images.length > 0) {
+                     object.constructor.name === "Polygon") && 
+                    (object.images.length > 0 || object.graphics.length > 0)) {
+
                     object.fit(fitOption);  // Use proportional fitting
                 } else if (object.constructor.name === "Group") {
                     for (var i = 0; i < object.allPageItems.length; i++) {
-                        fitContentInImagesProportionally(object.allPageItems[i], fitOption);
+                        fitContentInMediaProportionally(object.allPageItems[i], fitOption);
                     }
                 }
             }
@@ -137,23 +144,23 @@ app.doScript(function () {
                 var offsetX = secondBounds[1] - firstBounds[1];
                 var offsetY = secondBounds[0] - firstBounds[0];
 
-                // Adjust the image position for both objects
-                adjustImagePosition(firstObject, offsetX, offsetY);
-                adjustImagePosition(secondObject, -offsetX, -offsetY);
+                // Adjust the image/graphic position for both objects
+                adjustMediaPosition(firstObject, offsetX, offsetY);
+                adjustMediaPosition(secondObject, -offsetX, -offsetY);
 
-                // Adjust image positions within groups if necessary
+                // Adjust media positions within groups if necessary
                 adjustGroupImagesPosition(firstObject, offsetX, offsetY);
                 adjustGroupImagesPosition(secondObject, -offsetX, -offsetY);
 
             } else {
-                // Use FILL_PROPORTIONALLY option for fitting images without stretching
+                // Use FILL_PROPORTIONALLY option for fitting media without stretching
                 var fitOptions = FitOptions.FILL_PROPORTIONALLY;
 
-                // Fit content in images in both objects using proportional fitting for all shapes
-                fitContentInImagesProportionally(firstObject, fitOptions);
-                fitContentInImagesProportionally(secondObject, fitOptions);
+                // Fit content in media in both objects using proportional fitting for all shapes
+                fitContentInMediaProportionally(firstObject, fitOptions);
+                fitContentInMediaProportionally(secondObject, fitOptions);
 
-                // Adjust image positions within groups if necessary
+                // Adjust media positions within groups if necessary
                 adjustGroupImagesPosition(firstObject, 0, 0);
                 adjustGroupImagesPosition(secondObject, 0, 0);
             }
