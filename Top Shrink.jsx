@@ -7,6 +7,7 @@
 
 
 //Top Shrink
+
 app.doScript(function() {
     // Get the active document
     var doc = app.activeDocument;
