@@ -6,7 +6,6 @@
 // Preferred keyboard shortcut is F2
 
 // AutoSubheader
-
 // Function to get the index of the insertion point in a text frame
 function getInsertionPoint(textFrame) {
     var selection = app.selection;
