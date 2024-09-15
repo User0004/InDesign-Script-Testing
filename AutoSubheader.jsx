@@ -7,43 +7,36 @@
 
 // AutoSubheader
 
-// Main function to find and apply text settings to consecutive paragraphs
-function findAndApplyTextSettings() {
-    if (app.documents.length > 0) {
-        var doc = app.activeDocument;
-        var selection = app.selection;
+// Function to get the index of the insertion point in a text frame
+function getInsertionPoint(textFrame) {
+    var selection = app.selection;
+    var cursorIndex = -1;
 
-        if (selection.length > 0) {
-            var selectedTextFrames = [];
-
-            for (var i = 0; i < selection.length; i++) {
-                if (selection[i] instanceof TextFrame) {
-                    selectedTextFrames.push(selection[i]);
-                } else if (selection[i].hasOwnProperty('insertionPoints')) {
-                    selectedTextFrames.push(selection[i].parentTextFrames[0]);
-                }
+    if (selection.length > 0) {
+        for (var i = 0; i < selection.length; i++) {
+            if (selection[i] instanceof Text) {
+                cursorIndex = selection[i].index;
+                break;
+            } else if (selection[i] instanceof InsertionPoint) {
+                cursorIndex = selection[i].index;
+                break;
             }
-
-            if (selectedTextFrames.length === 0) {
-                alert("No valid text frames found in selection.");
-                return;
-            }
-
-            for (var j = 0; j < selectedTextFrames.length; j++) {
-                processTextFrame(selectedTextFrames[j]);
-            }
-        } else {
-            alert("Please select at least one text frame or insertion point.");
         }
-    } else {
-        alert("No active document found.");
     }
+
+    if (cursorIndex === -1) {
+        // Default to 0 if no valid cursor position found
+        cursorIndex = 0;
+    }
+
+    return cursorIndex;
 }
 
 // Function to process a single text frame
 function processTextFrame(textFrame) {
     var paragraphs = textFrame.parentStory.paragraphs.everyItem().getElements();
-    
+    var cursorIndex = getInsertionPoint(textFrame);
+
     var foundTargetParagraph = false;
     var targetTextSettingsList = [];
     var applyIndentAdjustment = false;
@@ -55,6 +48,11 @@ function processTextFrame(textFrame) {
 
     for (var i = 0; i < paragraphs.length; i++) {
         var paragraph = paragraphs[i];
+
+        // Skip paragraphs before the insertion point
+        if (paragraph.index < cursorIndex) {
+            continue;
+        }
 
         if (paragraph.contents.replace(/^\s+|\s+$/g, '').length === 0) {
             continue;
@@ -286,6 +284,41 @@ function getCapitalization(constantValue) {
             return true;
         default:
             return Capitalization.NORMAL;
+    }
+}
+
+// Main function to find and apply text settings to consecutive paragraphs
+function findAndApplyTextSettings() {
+    if (app.documents.length > 0) {
+        var doc = app.activeDocument;
+        var selection = app.selection;
+
+        if (selection.length > 0) {
+            var selectedTextFrames = [];
+
+            for (var i = 0; i < selection.length; i++) {
+                if (selection[i] instanceof TextFrame) {
+                    selectedTextFrames.push(selection[i]);
+                } else if (selection[i] instanceof Text) {
+                    selectedTextFrames.push(selection[i].parentTextFrames[0]);
+                } else if (selection[i] instanceof InsertionPoint) {
+                    selectedTextFrames.push(selection[i].parentTextFrames[0]);
+                }
+            }
+
+            if (selectedTextFrames.length === 0) {
+                alert("No valid text frames found in selection.");
+                return;
+            }
+
+            for (var j = 0; j < selectedTextFrames.length; j++) {
+                processTextFrame(selectedTextFrames[j]);
+            }
+        } else {
+            alert("Please select at least one text frame or insertion point.");
+        }
+    } else {
+        alert("No active document found.");
     }
 }
 
