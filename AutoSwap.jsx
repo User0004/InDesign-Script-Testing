@@ -11,9 +11,7 @@
 
 
 
-
-
-
+//AutoSwap
 //AutoSwap
 
 app.doScript(function () {
