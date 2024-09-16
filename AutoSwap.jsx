@@ -12,8 +12,6 @@
 
 
 //AutoSwap
-//AutoSwap
-
 app.doScript(function () {
     if (app.selection.length !== 2) {
         alert("Please select exactly two objects.");
