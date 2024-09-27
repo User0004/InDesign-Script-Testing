@@ -7,7 +7,7 @@
 
 
 //AutoThread
-var gScriptName = "Advanced Thread Text Frames (Bidirectional with Improved Error Handling)";
+var gScriptName = "AutoThread";
 
 try {
     app.doScript(main, undefined, undefined, UndoModes.ENTIRE_SCRIPT, gScriptName);
