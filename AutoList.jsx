@@ -4,6 +4,7 @@
 // The script allows the designer to have many stacked subheaders of differnt styles. However the chain of styles is broken upon a hard enter
 // This is a sister script to AutoSubheader ---- this script works where there is bodycopy paragraphs and many  
 // Updates: There are hard coded styles, would be good to improve it by making a temp parageaph style 
+// Author: George Hannaford george.hannaford@telegraph.co.uk
 // Prefered keyboard shortcut is alt+F6
 // Version 1.0.0
 
