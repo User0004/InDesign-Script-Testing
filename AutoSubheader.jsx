@@ -3,7 +3,7 @@
 // FUNCTION: To search for an array of words which are under 10 in length and apply the first instance subheader throughout following text
 // The script allows the designer to have many stacked subheaders that can be applied throughout the copy with as many enters intween as they like
 // This is a sister script AutoList 
-// Preferred keyboard shortcut is F2
+// Preferred keyboard shortcut is alt+F5
 // Version 1.0.0
 
 // AutoSubheader
