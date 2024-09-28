@@ -2,6 +2,7 @@
 // STATUS: Ready
 // FUNCTION: Decrease height of selected items from top one baseline for each time the script is run
 // Best to use on non group grouped items for Nav. If needed use white arrow to handle groups, but black arrow is find for text boxes 
+// Author: George Hannaford george.hannaford@telegraph.co.uk
 // Prefered keyboard shortcut is alt+F10
 // Version 1.0.0
 
