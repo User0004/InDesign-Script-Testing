@@ -5,9 +5,9 @@
 // OUTLINE: Works by preforming the same set of events a user would undertake ensuring that database items are not mixed up
 // Picture crops are defaulted to Options.FILL_PROPORTIONALLY - an updated version of the script tried to prevent crop changes for selections made where images were the exact same size - although tolerance would be nice as users may not have exact same size
 // One can select two single objects or  - group an array of objects together with a selection to move wider selections - one can also use this script to swap stories on the page with new furniture and not have to redraw an entire page
-// Prefered keyboard shortcut is F11
 // Updated code to handle swaps of differnt SplineItem subclasses, namely Oval | Rectangle | Polygon
 // Note user will be alerted to an error if they try to swap something with a GraphicLine -- aka just a straight line 
+// Prefered keyboard shortcut is F9
 // Version 1.0.0
 
 
