@@ -5,6 +5,7 @@
 // The script places a 0.3pt black rule with a height notched from the top so it lines up with letters 
 // The script can work out how high or low to place rules based on neighbouring heights of selections
 // Selections can be made across spreads without placing rules in the gutter 
+// Author: George Hannaford george.hannaford@telegraph.co.uk
 // Prefered keyboard shortcut is alt+F2
 // Version 1.0.0
 
