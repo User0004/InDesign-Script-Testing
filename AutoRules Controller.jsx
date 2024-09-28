@@ -6,10 +6,11 @@
 // The script has some preset values which are the default values making it easy back to the regular rules
 // The script can work out how high or low to place rules based on neighbouring heights of selections PLUS selections can be made across spreads without placing rules in the gutter 
 // Prefered keyboard not needed as it is rare that it should be needed but well worth keeping for special supplements etc 
+// Version 1.0.0
+
 
 
 // AutoRules Controller
-
 var f = File($.fileName).parent + "/autoRule_user_preset.xml";
 
 var xml = readXML(f);
