@@ -4,6 +4,7 @@
 // The script allows the designer to have many stacked subheaders that can be applied throughout the copy with as many enters intween as they like
 // This is a sister script AutoList 
 // Preferred keyboard shortcut is F2
+// Version 1.0.0
 
 // AutoSubheader
 // Function to get the index of the insertion point in a text frame
