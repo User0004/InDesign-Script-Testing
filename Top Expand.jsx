@@ -3,7 +3,7 @@
 // FUNCTION: Increase height of selected items from top one baseline for each time the script is run
 // Best to use on non group grouped items for Nav. If needed use white arrow to handle groups, but black arrow is find for text boxes
 // Prefered keyboard shortcut is Top Expand F9
-
+// Version 1.0.0
 
 
 
