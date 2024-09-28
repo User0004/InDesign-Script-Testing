@@ -1,7 +1,7 @@
 // NAME:AutoThread
 // STATUS: Ready
 // FUNCTION: to thread a selection of text from left to right no matter the order a users selections
-// Prefered keyboard shortcut is F7
+// Prefered keyboard shortcut is alt+F3
 // Version 1.0.0
 
 
