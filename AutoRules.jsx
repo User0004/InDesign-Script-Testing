@@ -6,10 +6,10 @@
 // The script can work out how high or low to place rules based on neighbouring heights of selections
 // Selections can be made across spreads without placing rules in the gutter 
 // Prefered keyboard shortcut is F6
+// Version 1.0.0
 
 
 // AutoRules script 
-
 // Set measurement units to points
 app.scriptPreferences.measurementUnit = MeasurementUnits.POINTS;
 
