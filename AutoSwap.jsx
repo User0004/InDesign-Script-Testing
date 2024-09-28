@@ -8,7 +8,7 @@
 // Prefered keyboard shortcut is F11
 // Updated code to handle swaps of differnt SplineItem subclasses, namely Oval | Rectangle | Polygon
 // Note user will be alerted to an error if they try to swap something with a GraphicLine -- aka just a straight line 
-
+// Version 1.0.0
 
 
 //AutoSwap
