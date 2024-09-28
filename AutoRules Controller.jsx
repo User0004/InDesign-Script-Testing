@@ -5,6 +5,7 @@
 // If a designer does not need to run the AutoRules Controller one may simply run the AutoRules which as been set up to work from default settings appropriate for DT pages 
 // The script has some preset values which are the default values making it easy back to the regular rules
 // The script can work out how high or low to place rules based on neighbouring heights of selections PLUS selections can be made across spreads without placing rules in the gutter 
+// Author: George Hannaford george.hannaford@telegraph.co.uk
 // Prefered keyboard not needed as it is rare that it should be needed but well worth keeping for special supplements etc 
 // Version 1.0.0
 
