@@ -5,6 +5,7 @@
 // This is a sister script to AutoSubheader ---- this script works where there is bodycopy paragraphs and many  
 // Updates: There are hard coded styles, would be good to improve it by making a temp parageaph style 
 // Prefered keyboard shortcut is Shift + F2 
+// Version 1.0.0
 
 //AutoList
 function findAndApplyTextSettings() {
