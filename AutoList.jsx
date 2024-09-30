@@ -248,9 +248,46 @@ function isStyleUnmodified(paragraph, paragraphStyle) {
     return paragraph.appliedFont === paragraphStyle.appliedFont &&
            paragraph.pointSize === paragraphStyle.pointSize &&
            paragraph.fillColor === paragraphStyle.fillColor &&
+           paragraph.fillTint === paragraphStyle.fillTint &&
+           paragraph.justification === paragraphStyle.justification &&
            paragraph.leading === paragraphStyle.leading &&
-           paragraph.firstLineIndent === paragraphStyle.firstLineIndent;
+           paragraph.firstLineIndent === paragraphStyle.firstLineIndent &&
+           paragraph.baselineShift === paragraphStyle.baselineShift &&
+           paragraph.tracking === paragraphStyle.tracking &&
+           paragraph.capitalization === getCapitalization(paragraphStyle.capitalization) && // Assuming you want to use getCapitalization here as well
+           paragraph.alignToBaseline === paragraphStyle.alignToBaseline &&
+           paragraph.ruleAbove === paragraphStyle.ruleAbove &&
+           paragraph.ruleBelow === paragraphStyle.ruleBelow &&
+           paragraph.ruleAboveColor === paragraphStyle.ruleAboveColor &&
+           paragraph.ruleAboveGapColor === paragraphStyle.ruleAboveGapColor &&
+           paragraph.ruleAboveGapOverprint === paragraphStyle.ruleAboveGapOverprint &&
+           paragraph.ruleAboveGapTint === paragraphStyle.ruleAboveGapTint &&
+           paragraph.ruleAboveLeftIndent === paragraphStyle.ruleAboveLeftIndent &&
+           paragraph.ruleAboveLineWeight === paragraphStyle.ruleAboveLineWeight &&
+           paragraph.ruleAboveOffset === paragraphStyle.ruleAboveOffset &&
+           paragraph.ruleAboveOverprint === paragraphStyle.ruleAboveOverprint &&
+           paragraph.ruleAboveRightIndent === paragraphStyle.ruleAboveRightIndent &&
+           paragraph.ruleAboveTint === paragraphStyle.ruleAboveTint &&
+           paragraph.ruleAboveType === paragraphStyle.ruleAboveType &&
+           paragraph.ruleAboveWidth === paragraphStyle.ruleAboveWidth &&
+           paragraph.ruleBelowColor === paragraphStyle.ruleBelowColor &&
+           paragraph.ruleBelowGapColor === paragraphStyle.ruleBelowGapColor &&
+           paragraph.ruleBelowGapOverprint === paragraphStyle.ruleBelowGapOverprint &&
+           paragraph.ruleBelowGapTint === paragraphStyle.ruleBelowGapTint &&
+           paragraph.ruleBelowLeftIndent === paragraphStyle.ruleBelowLeftIndent &&
+           paragraph.ruleBelowLineWeight === paragraphStyle.ruleBelowLineWeight &&
+           paragraph.ruleBelowOffset === paragraphStyle.ruleBelowOffset &&
+           paragraph.ruleBelowOverprint === paragraphStyle.ruleBelowOverprint &&
+           paragraph.ruleBelowRightIndent === paragraphStyle.ruleBelowRightIndent &&
+           paragraph.ruleBelowTint === paragraphStyle.ruleBelowTint &&
+           paragraph.ruleBelowType === paragraphStyle.ruleBelowType &&
+           paragraph.ruleBelowWidth === paragraphStyle.ruleBelowWidth &&
+           paragraph.spaceBefore === paragraphStyle.spaceBefore &&
+           paragraph.spaceAfter === paragraphStyle.spaceAfter &&
+           paragraph.hyphenation === paragraphStyle.hyphenation;
 }
+
+
 
 // Helper function to map capitalization constants to InDesign values
 function getCapitalization(constantValue) {
