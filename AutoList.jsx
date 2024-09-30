@@ -254,7 +254,7 @@ function isStyleUnmodified(paragraph, paragraphStyle) {
            paragraph.firstLineIndent === paragraphStyle.firstLineIndent &&
            paragraph.baselineShift === paragraphStyle.baselineShift &&
            paragraph.tracking === paragraphStyle.tracking &&
-           paragraph.capitalization === getCapitalization(paragraphStyle.capitalization) && // Assuming you want to use getCapitalization here as well
+           paragraph.capitalization === getCapitalization(paragraphStyle.capitalization) && 
            paragraph.alignToBaseline === paragraphStyle.alignToBaseline &&
            paragraph.ruleAbove === paragraphStyle.ruleAbove &&
            paragraph.ruleBelow === paragraphStyle.ruleBelow &&
